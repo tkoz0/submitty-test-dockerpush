@@ -20,6 +20,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@releases/v3
       with:
-         context: .
+         context: tkoz0/submitty-verilog
          push: true
-         tags: user/app:latest
+         tags: tkoz0/submitty-verilog:latest
