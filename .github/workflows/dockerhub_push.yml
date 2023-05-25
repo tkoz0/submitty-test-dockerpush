@@ -6,9 +6,26 @@ on:
     - main
 
 jobs:
+  files-check:
+    name: Check modified files
+    outputs:
+      submitty-verilog: ${{ steps.check_files.outputs.submitty-verilog }}
+      submitty-verilog-2: ${{ steps.check_files.outputs.submitty-verilog-2 }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v3
+    - name: Look for modified files
+      id: check_files
+      run: |
+        COUNT=$(git diff --name-only HEAD^ HEAD | grep tkoz0/submitty-verilog/ | wc -l)
+        if [[ $COUNT != 0 ]]; then echo "::set-output name=submitty-verilog::false"; else echo "::set-output name=submitty-verilog::true"; fi;
+        COUNT=$(git diff --name-only HEAD^ HEAD | grep tkoz0/submitty-verilog-2/ | wc -l)
+        if [[ $COUNT != 0 ]]; then echo "::set-output name=submitty-verilog-2::false"; else echo "::set-output name=submitty-verilog-2::true"; fi;
   push-images:
     name: Push docker images
     runs-on: ubuntu-latest
+    needs: files-check
     steps:
     - name: Check out repo
       uses: actions/checkout@v3
@@ -18,12 +35,14 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push submitty-verilog
+      if: needs.files-check.outputs.submitty-verilog
       uses: docker/build-push-action@releases/v3
       with:
          context: tkoz0/submitty-verilog
          push: true
          tags: tkoz0/submitty-verilog:latest
     - name: Build and push submitty-verilog-2
+      if: needs.files-check.outputs.submitty-verilog-2
       uses: docker/build-push-action@releases/v3
       with:
          context: tkoz0/submitty-verilog-2
