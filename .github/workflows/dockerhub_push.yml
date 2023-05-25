@@ -37,14 +37,14 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push submitty-verilog
-      if: needs.files-check.outputs.submitty-verilog
+      if: needs.files-check.outputs.submitty-verilog == 'true'
       uses: docker/build-push-action@releases/v3
       with:
          context: tkoz0/submitty-verilog
          push: true
          tags: tkoz0/submitty-verilog:latest
     - name: Build and push submitty-verilog-2
-      if: needs.files-check.outputs.submitty-verilog-2
+      if: needs.files-check.outputs.submitty-verilog-2 == 'true'
       uses: docker/build-push-action@releases/v3
       with:
          context: tkoz0/submitty-verilog-2
