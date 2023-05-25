@@ -29,3 +29,4 @@ jobs:
          context: tkoz0/submitty-verilog-2
          push: true
          tags: tkoz0/submitty-verilog-2:latest
+
