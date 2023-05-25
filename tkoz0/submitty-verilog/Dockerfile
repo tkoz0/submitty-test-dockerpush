@@ -1,3 +1,5 @@
+# the docker container to run verilog autograding on submitty
+
 FROM debian:bullseye-slim
 
 RUN apt-get update \
