@@ -21,9 +21,9 @@ jobs:
       id: check_files
       run: |
         COUNT=$(git diff --name-only HEAD^ HEAD | grep tkoz0/submitty-verilog/ | wc -l)
-        if [[ $COUNT != 0 ]]; then echo "::set-output name=submitty-verilog::true"; else echo "::set-output name=submitty-verilog::false"; fi;
+        if [[ $COUNT != 0 ]]; then echo "submitty-verilog=true" >> $GITHUB_OUTPUT; else echo "submitty-verilog=false" >> $GITHUB_OUTPUT; fi;
         COUNT=$(git diff --name-only HEAD^ HEAD | grep tkoz0/submitty-verilog-2/ | wc -l)
-        if [[ $COUNT != 0 ]]; then echo "::set-output name=submitty-verilog-2::true"; else echo "::set-output name=submitty-verilog-2::false"; fi;
+        if [[ $COUNT != 0 ]]; then echo "submitty-verilog-2=true" >> $GIHTUB_OUTPUT; else echo "submitty-verilog-2=false" >> $GITHUB_OUTPUT; fi;
   push-images:
     name: Push docker images
     runs-on: ubuntu-latest
